@@ -5,4 +5,4 @@
 zig build run
 ```
 
-press esc to close the window
+press space to close the window

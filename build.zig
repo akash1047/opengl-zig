@@ -14,17 +14,12 @@ pub fn build(b: *std.build.Builder) void {
     const exe = b.addExecutable("opengl-zig", "src/main.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
+    exe.linkLibC();
     exe.addIncludePath("external/glad/include");
+    exe.addCSourceFile("external/glad/src/gl.c", &[_][]const u8{});
     exe.linkSystemLibrary("glfw3");
     exe.linkSystemLibrary("OpenGl");
     exe.install();
-
-    const glad = b.addStaticLibrary("glad", null);
-    glad.addCSourceFile("external/glad/src/gl.c", &[_][]const u8{"-Iexternal/glad/include/"});
-    glad.linkLibC();
-    glad.install();
-
-    exe.linkLibrary(glad);
 
     const run_cmd = exe.run();
     run_cmd.step.dependOn(b.getInstallStep());
